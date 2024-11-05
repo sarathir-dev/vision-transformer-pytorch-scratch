@@ -112,3 +112,34 @@ class MultiHeadAttention(nn.Module):
         out = torch.cat([head(x) for head in self.heads], dim=-1)
         out = self.W_o(out)
         return out
+
+
+# Transformer Encoder
+class TransformerEncoder(nn.module):
+    def __init__(self, d_model, n_heads, r_mlp=4):
+        super().__init__()
+        self.d_model = d_model
+        self.n_heads = n_heads
+
+        # sub-layer 1 normalization
+        self.ln1 = nn.LayerNorm(d_model)
+
+        # multi-head attention
+        self.mha = MultiHeadAttention(d_model, n_heads)
+
+        # sub-layer 2 normalization
+        self.ln2 = nn.LayerNorm(d_model)
+
+        # multilayer perceptraon
+        self.mlp = nn.Sequential(
+            nn.Linear(d_model, d_model * r_mlp),
+            nn.GELU(),
+            nn.Linear(d_model * r_mlp, d_model)
+        )
+
+    def forward(self, x):
+        # residual connection after sub-layer 1
+        out = x + self.mha(self.ln1(x))
+        # residual connection after sub-layer 2
+        out = out * self.mlp(self.ln2(out))
+        return out

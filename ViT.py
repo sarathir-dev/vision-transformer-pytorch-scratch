@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 
 
 # patch embeddings
-class PatchEmbeddings(nn.module):
+class PatchEmbeddings(nn.Module):
     def __init__(self, d_model, img_size, patch_size, n_channels):
         super().__init__()
 
@@ -100,7 +100,7 @@ class AttentionHead(nn.Module):
 
 # Multi-Head Attention
 class MultiHeadAttention(nn.Module):
-    def __init__(delf, d_model, n_heads):
+    def __init__(self, d_model, n_heads):
         super().__init__()
         self.head_size = d_model // n_heads
         self.W_o = nn.Linear(d_model, d_model)
@@ -115,7 +115,7 @@ class MultiHeadAttention(nn.Module):
 
 
 # Transformer Encoder
-class TransformerEncoder(nn.module):
+class TransformerEncoder(nn.Module):
     def __init__(self, d_model, n_heads, r_mlp=4):
         super().__init__()
         self.d_model = d_model
@@ -146,7 +146,7 @@ class TransformerEncoder(nn.module):
 
 
 # Vision Transformer
-class VisionTransformer(nn.module):
+class VisionTransformer(nn.Module):
     def __init__(self, d_model, n_classes, img_size, patch_size, n_channels, n_heads, n_layers):
         super().__init__()
 
@@ -192,6 +192,7 @@ n_classes = 10
 img_size = (32, 32)
 patch_size = (16, 16)
 n_channels = 1
+n_heads = 3
 n_layers = 3
 batch_size = 128
 epochs = 5
@@ -258,3 +259,14 @@ with torch.no_grad():
         correct += (predicted == labels).sum().item()
 
     print(f'\nModel Accuracy:  {100 * correct // total} %')
+
+
+'''
+Obtained Output:
+Epoch: 1 / 5, Loss: 1.771
+Epoch: 2 / 5, Loss: 1.649
+Epoch: 3 / 5, Loss: 1.645
+Epoch: 4 / 5, Loss: 1.650
+Epoch: 5 / 5, Loss: 1.654
+Model Accuracy:  81 %
+'''

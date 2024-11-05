@@ -184,3 +184,15 @@ class VisionTransformer(nn.module):
         x = self.transformer_encoder(x)
         x = self.classifier(x[:, 0])
         return x
+
+
+# Training Parameters
+d_model = 9
+n_classes = 10
+img_size = (32, 32)
+patch_size = (16, 16)
+n_channels = 1
+n_layers = 3
+batch_size = 128
+epochs = 5
+alpha = 0.005

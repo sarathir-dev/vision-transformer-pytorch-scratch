@@ -96,3 +96,19 @@ class AttentionHead(nn.Module):
         attention = torch.softmax(attention, dim=-1)
         attention = attention @ V
         return attention
+
+
+# Multi-Head Attention
+class MultiHeadAttention(nn.Module):
+    def __init__(delf, d_model, n_heads):
+        super().__init__()
+        self.head_size = d_model // n_heads
+        self.W_o = nn.Linear(d_model, d_model)
+        self.heads = nn.ModuleList(
+            [AttentionHead(d_model, self.head_size) for _ in range(n_heads)])
+
+    def forward(self, x):
+        # combine attentio heads
+        out = torch.cat([head(x) for head in self.heads], dim=-1)
+        out = self.W_o(out)
+        return out

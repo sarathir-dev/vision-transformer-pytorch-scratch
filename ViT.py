@@ -1,9 +1,18 @@
+# Import libraries and modules
+
+# Using PyTorch
 import torch
 import torch.nn as nn
+
+# In order to resize the input images and convert them to tensors.
 import torchvision.transforms as T
+
+# To perform sin and cosine when creating the positional encodings
 import numpy as np
 
+# Using Adam for our optimizer
 from torch.optim import Adam
+# Using the MNIST datasets for this model architecture
 from torchvision.datasets.mnist import MNIST
 from torch.utils.data import DataLoader
 
